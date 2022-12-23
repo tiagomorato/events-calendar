@@ -1,0 +1,67 @@
+1. nested query
+
+SELECT ROUND(avg(score),1) avg
+FROM review
+WHERE event_id IN (
+	SELECT id
+	FROM event
+	WHERE location_id = $location_id
+	)
+
+
+2. join query
+
+SELECT e.name name, e.date date, c.name cname, e.id id
+FROM event AS e, club AS c, host AS h
+WHERE e.location_id = $location_id
+AND e.id = h.event_id
+AND h.club_id = c.id
+
+
+3. join query
+
+SELECT u.full_name name, u.department dep, e.date
+FROM participants AS p, user AS u, event AS e
+WHERE e.id = $event_id
+AND e.id = p.event_id
+AND p.user_id = u.id
+
+4. select ORDER BY query
+
+SELECT id, name, date
+FROM event
+ORDER BY date
+
+5. SELECT CONCAT&COUNT&GROUP BY query 
+
+SELECT CONCAT(YEAR(event.date),'-',MONTH(event.date)) AS d, Count(*) c
+FROM event.participants
+WHERE id.event = event_id.participants AND YEAR(event.date) = 2022
+GROUP BY d
+
+6. UNION query
+
+SELECT content AS content FROM post WHERE id = '$userID' 
+UNION ALL 
+SELECT review AS content FROM review WHERE id = '$userID'
+
+7. INSERT query
+
+INSERT INTO user (id,email,password,full_name,birthdate,grade,department) 
+VALUES('$id','$email','$password','$name','$birthday','$grade','$department')
+
+8. COUNT&JOIN query
+
+SELECT COUNT(*) as count_user
+FROM user
+JOIN user_and_community
+ON user.id = user_and_community.user_id
+WHERE community_id = 1
+
+9. DELETE query
+
+DELETE FROM event WHERE id=$eid
+
+10. UPDATE query
+
+UPDATE club SET name='$name' WHERE id='$club_id'
